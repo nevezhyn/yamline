@@ -250,6 +250,11 @@ def _get_element(authority):
                 element[literals.STEP_NAME] == name)):
             return element
 
+        if all((literals.STAGE_TRY in element,
+                literals.STAGE_NAME in element,
+                element[literals.STAGE_NAME] == name)):
+            return element
+
     error_msg = 'Specified element: "{}" is not found in file: "{}"'
     raise RuntimeError(error_msg.format(name, file_path))
 
