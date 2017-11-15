@@ -1,0 +1,30 @@
+@startuml
+partition GetScript {
+(*top) --> "Load YAML/JSON\nscript specification"
+If "script is YAML" then
+--> [Yes] "yaml.safe_load()"
+--> "python dict"
+else
+--> [No] "json.load()"
+--> "python dict"
+Endif
+}
+
+partition ParseScript {
+--> create script obj
+--> create block obj \nfor each mapping\n with 'try' key
+--> create command obj\nfor each mapping\nwith 'strategy' key
+}
+
+partition ExecuteScript {
+--> script.execute()
+If "was exception" then
+--> [Yes] "execute according\n 'except' block (if any)"
+--> "execute 'finally' block"
+else
+--> [No] "execute 'else' block (if any)"
+--> "execute 'finally' block"
+Endif
+-->(*)
+}
+@enduml

@@ -1,0 +1,23 @@
+---
+WHEN: if
+
+STEP_NAME: description
+STEP_STRATEGY: strategy
+STEP_SETS: sets
+STEP_ARGS: args
+STEP_KWARGS: kwargs
+
+STAGE_NAME: stage description
+STAGE_TRY: stage
+STAGE_EXCEPT: error
+STAGE_ELSE: pass
+STAGE_FINALLY: always
+STAGE_WHEN: if
+
+PIPELINE_ALIASES: aliases
+PIPELINE_IMPORT: import
+PIPELINE_METADATA: metadata
+PIPELINE_VALUES: variables
+
+URI_SCHEME_STRATEGY: module
+URI_SCHEME_IMPORT: import

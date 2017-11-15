@@ -1,0 +1,40 @@
+required = {
+    "WHEN",
+    "STEP_NAME",
+    "STEP_STRATEGY",
+    "STEP_SETS",
+    "STEP_ARGS",
+    "STEP_KWARGS",
+    "STAGE_NAME",
+    "STAGE_TRY",
+    "STAGE_EXCEPT",
+    "STAGE_ELSE",
+    "STAGE_FINALLY",
+    "STAGE_WHEN",
+    "PIPELINE_ALIASES",
+    "PIPELINE_IMPORT",
+    "PIPELINE_METADATA",
+    "PIPELINE_VALUES",
+    "URI_SCHEME_STRATEGY",
+    "URI_SCHEME_IMPORT"
+}
+
+default = """---
+WHEN: when
+STEP_NAME: name
+STEP_STRATEGY: strategy
+STEP_SETS: sets
+STEP_ARGS: args
+STEP_KWARGS: kwargs
+STAGE_NAME: name
+STAGE_TRY: try
+STAGE_EXCEPT: except
+STAGE_ELSE: else
+STAGE_FINALLY: finally
+STAGE_WHEN: when
+PIPELINE_ALIASES: aliases
+PIPELINE_IMPORT: import
+PIPELINE_METADATA: metadata
+PIPELINE_VALUES: values
+URI_SCHEME_STRATEGY: module
+URI_SCHEME_IMPORT: import"""

@@ -1,0 +1,128 @@
+\title{YAMLine Specification}
+\author{
+        Roman Nevezhyn \\
+                \underline{Ukraine}}
+\date{\today}
+
+\documentclass[11pt]{article}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This paper presents general YAML pipeline syntax \ldots
+\end{abstract}
+
+\section{Elements specifications}
+YAML Pipeline is a set of YAML mappings that specify workflow.
+There are following types of \verb|YAML elements|:
+\begin{itemize}
+  \item \verb|stage|:
+    \begin{verbatim}
+{
+  "[name]": "str",
+  "try": [],
+  "[except]": [],
+  "[else]": [],
+  "[finally]": [],
+  "[when]": "str"
+}
+}\end{verbatim}
+  \item \verb|step|:
+  \begin{verbatim}
+{
+  "[name]": "str",
+  "strategy": "str",
+  "[sets]": "str",
+  "[args]": [],
+  "[kwargs]": {"str": object},
+  "[when]": "str"
+}
+  \end{verbatim}
+  \item \verb|pipeline|:
+  \begin{verbatim}
+{
+  "[aliases]": "str",
+  "[import]": ["str"],
+  "[metadata]": {"str": object},
+  "[values]": {"str": object},
+  "[name]": "str",  
+  "try": [],
+  "[except]": [],
+  "[else]": [],
+  "[finally]": [],
+  "[when]": "str"
+}
+  
+  [] = ["stage", "step"]
+  \end{verbatim}
+\end{itemize}
+
+\section{General YAML Pipeline info}\label{general_info}
+\paragraph{pipeline variables}Pipeline element manages variables that were setted in steps via \verb|sets: str| key value pair. \verb|str| represented in special varible syntax \verb|{{ varible name }}| strictly matching folowing regexp \verb|(?<={{).*(?=}})|. Pipeline variables may be sent to executing step as a \verb|args| and \verb|kwargs| fields. All variables are have a global pipeline scope. If two steps set same variable name then the last step will override value that was set before.
+
+\paragraph{name}Every \verb|YAML pipeline element| has the optional \verb|name: str| mapping. This field is intednet to be used as an identifier for import or as a description.
+
+\paragraph{when}
+Every \verb|YAML pipeline element| has the optional \verb|when: str| mapping. An element containig \verb|when: str| key value pair will only be executed if Python call \verb|bool(eval(str))| call will return \verb|True|. ~ref{pipeline variables} may be used in evaluation e. g.: \verb|when: len({{ var_name }}) > 10|. Variables name will be changed by parsing mechanism that above expression will be evalueated as: \verb|len(var_name) > 10| strictly matching folowing regexp \verb|{{.*}}|.
+
+\section{Step}\label{step_info}
+\paragraph{strategy}
+A string in URI syntax that specifies function (callable) e.g.: \verb|strategy://strategies/database/experience_ids|
+
+\paragraph{strategy}
+A string in URI syntax: \verb|strategy://strategies/database/experience_ids|
+
+\paragraph{sets}
+Single variable name in pipeline varibales syntax e.g.: \verb|{{ var_name }}|
+
+\paragraph{args}
+An array of values and/or pipeline variables e.g.: 
+\begin{verbatim}
+	args:
+	- {{ var_name1 }}
+	- {{ var_name2 }}
+	- 543
+	- Hallo World 
+\end{verbatim}
+
+\paragraph{kwargs}
+A mapping of key values pairs and values may be concrete values and/or pipeline variables e.g.:
+\begin{verbatim}
+      kwargs:
+        db_columns_to_match: {{ var_name }}
+        db_metadata_to_match:
+          bots_count: 24
+          arenas: 2
+          pvp_bots: false
+          groups: 1
+\end{verbatim}
+
+\section{Stage}\label{stage_info}
+\paragraph{try}
+\paragraph{except}
+\paragraph{else}
+\paragraph{finally}
+
+\section{Pipeline}\label{pipeline_info}
+\paragraph{aliases}
+\paragraph{import}
+\paragraph{metadata}
+\paragraph{values}
+
+
+\section{Aliases system}\label{aliases system}
+There is a posibility to assign an alias for any \verb|YAML element|.
+To specify an alias for the \verb|YAML element| one should create \verb|.yaml| file with following mapings:
+
+\section{Results}\label{results}
+In this section we describe the results.
+
+\section{Conclusions}\label{conclusions}
+We worked hard, and achieved very little.
+
+\bibliographystyle{abbrv}
+\bibliography{main}
+
+\end{document}
+This is never printed

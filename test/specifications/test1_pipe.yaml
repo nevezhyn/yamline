@@ -1,0 +1,129 @@
+stage description: Unittest test template
+
+metadata:
+  mapping:
+    key1: value1
+    key2: value2
+  sequence:
+    - Roman
+    - Igor
+    - 1
+    - 1.0
+  string: "Hallo words!!!"
+  ineger: 1
+  floating: 1.0
+
+variables:
+  mapping_value:
+    key1: value1
+    key2: value2
+  sequence:
+   - Roman
+   - Igor
+   - 1
+   - 1.0
+  string: "Hallo words!!!"
+  ineger: 1
+  floating: 1.0
+
+stage:
+  - stage description: Test values setup
+    stage:
+    - description: Print all values in std out
+      import: import://specifications/basic.yaml/echo
+
+    - import: import://specifications/basic_file.yaml
+    - description: Print all values
+      strategy: module://strategies/basic/echo
+      sets: "{{ global_vars }}"
+      args:
+      - "{{ mapping_value }}"
+      - "{{ sequence }}"
+      kwargs:
+        mapping_value: "{{ mapping_value }}"
+
+    - stage description: Raises ZeroDevision exception
+      strategy: module://strategies/basic/zero
+
+    - description: Print all values
+      strategy: module://strategies/basic/echo
+      sets: "{{ global_vars }}"
+      args:
+      - "{{ mapping_value }}"
+      - "{{ sequence }}"
+      kwargs:
+        mapping_value: "{{ mapping_value }}"
+
+    error:
+    - stage description: In Exception
+      stage:
+      - stage description: Print subblock
+        strategy: module://strategies/basic/echo
+        args:
+          - Roman_EXCEPTION
+          - Igor_EXCEPTION
+        kwargs:
+          in_pass: Hallo from pass _EXCEPTION
+
+    pass:
+    - stage description: Test subblock
+      stage:
+      - stage description: Print subblock
+        strategy: module://strategies/basic/echo
+        args:
+          - Roman_ElseTRY1
+          - Igor_ElseTRY1
+        kwargs:
+          in_pass: Hallo from pass blockTRY1
+      pass:
+      - stage description: Print subblock
+        strategy: module://strategies/basic/echo
+        args:
+          - Roman_ElseTRY2
+          - Igor_ElseTRY2
+        kwargs:
+          in_pass: Hallo from pass blockTRY2
+
+    - stage description: Test in pass block works
+      strategy: module://strategies/basic/echo
+      args:
+        - Roman_Else1
+        - Igor_Else1
+      kwargs:
+        in_pass: Hallo from pass block1
+
+    - stage description: Test in pass block works
+      strategy: module://strategies/basic/echo
+      args:
+        - Roman_Else2
+        - Igor_Else2
+      kwargs:
+        in_pass: Hallo from pass block2
+    always:
+    - stage description: Test that always works
+      strategy: module://strategies/basic/echo
+      args:
+        - Roman
+        - Igor
+      kwargs:
+        in_always: Hallo from always
+
+pass:
+  - stage description: Test that always works
+    strategy: module://strategies/basic/echo
+    args:
+      - RomanMAIN
+      - IgorMAIN
+    kwargs:
+      in_always: Hallo from always_MAIN
+
+if: True
+
+error:
+- description: Print subblock
+  strategy: module://strategies/basic/echo
+  args:
+    - Roman_EXCEPTION_MAIN
+    - Igor_EXCEPTION_MAIN
+  kwargs:
+    in_pass: Hallo from pass _EXCEPTION_MAIN

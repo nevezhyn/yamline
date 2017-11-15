@@ -1,0 +1,90 @@
+name: Unittest test template
+
+metadata:
+  mapping:
+    key1: value1
+    key2: value2
+  sequence:
+    - Roman
+    - Igor
+    - 1
+    - 1.0
+  string: "String"
+  ineger: 1
+  floating: 1.0
+
+values:
+  mapping_value:
+    key1: value1
+    key2: value2
+  sequence:
+   - 1
+   - 2
+  string: "String"
+  ineger: 1
+  floating: 1.0
+
+try:
+  - name: Test values setup
+    try:
+    - name: Print all values
+      strategy: module://strategies/basic/print_params
+      args:
+      - "{{ mapping_value }}"
+      - "{{ sequence }}"
+      kwargs:
+        mapping_value: "{{ mapping_value }}"
+
+    else:
+    - name: Test subblock
+      try:
+      - name: Print subblock
+        strategy: module://strategies/basic/print_params
+        args:
+          - Roman_ElseTRY1
+          - Igor_ElseTRY1
+        kwargs:
+          in_else: Hallo from else blockTRY1
+      else:
+      - name: Print subblock
+        strategy: module://strategies/basic/print_params
+        args:
+          - Roman_ElseTRY2
+          - Igor_ElseTRY2
+        kwargs:
+          in_else: Hallo from else blockTRY2
+
+    - name: Test in else block works
+      strategy: module://strategies/basic/print_params
+      args:
+        - Roman_Else1
+        - Igor_Else1
+      kwargs:
+        in_else: Hallo from else block1
+
+    - name: Test in else block works
+      strategy: module://strategies/basic/print_params
+      args:
+        - Roman_Else2
+        - Igor_Else2
+      kwargs:
+        in_else: Hallo from else block2
+
+    finally:
+    - name: Test that finally works
+      strategy: module://strategies/basic/print_params
+      args:
+        - Roman
+        - Igor
+      kwargs:
+        in_finally: Hallo from finally
+
+else:
+  - name: Test that finally works
+    strategy: module://strategies/basic/print_params
+    args:
+      - RomanMAIN
+      - IgorMAIN
+    kwargs:
+      in_finally: Hallo from finallyMAIN
+when: True
