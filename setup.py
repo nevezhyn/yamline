@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='yamline',
-    version='0.0.1',
+    version='0.0.2',
     packages=['yamline'],
     url='https://github.com/nevezhyn/yamline',
     license='',
