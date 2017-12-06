@@ -1,10 +1,10 @@
-import literals
-from .mixin import (get_pipeline,
-                    get_pipeline_item,
-                    Pipeline,
-                    Stage,
-                    Step,
-                    VarsBorg)
+import yamline.literals
+from yamline.mixin import (get_pipeline,
+                           get_pipeline_item,
+                           Pipeline,
+                           Stage,
+                           Step,
+                           VarsBorg)
 
-version_info = (0, 0, 1)
-__version__ = ".".join([str(v) for v in version_info])
+VERSION = (0, 0, 4)
+__version__ = ".".join(str(v) for v in VERSION)

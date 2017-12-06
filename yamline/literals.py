@@ -1,4 +1,4 @@
-required = {
+REQUIRED_KEYS = {
     "WHEN",
     "STEP_NAME",
     "STEP_STRATEGY",
@@ -19,7 +19,7 @@ required = {
     "URI_SCHEME_IMPORT"
 }
 
-default = """---
+DEFAULT_MAPPING = """---
 WHEN: when
 STEP_NAME: name
 STEP_STRATEGY: strategy

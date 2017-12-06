@@ -1,18 +1,34 @@
 \title{YAMLine Specification}
-\author{
-        Roman Nevezhyn \\
-                \underline{Ukraine}}
+\author{Roman Nevezhyn \\ 
+%% Роман Невежин\\
+ \underline{Ukraine}}
 \date{\today}
 
-\documentclass[11pt]{article}
+\documentclass[14pt]{article}
+\usepackage[a4paper, total={7in, 10in}]{geometry}
+\usepackage{multicol}
+\usepackage{polyglossia}   %% загружает пакет многоязыковой вёрстки
+\setdefaultlanguage{russian}  %% устанавливает главный язык документа
+    %\setdefaultlanguage[babelshorthands=true]{russian}  %% вместо предыдущей строки; доступны команды из пакета babel для русского языка
+\setotherlanguage{english} %% объявляет второй язык документа
+%%\defaultfontfeatures{Ligatures={TeX},Renderer=Basic}  %% свойства шрифтов по умолчанию. Для XeTeX опцию Renderer=Basic можно не указывать, она необходима для LuaTeX
+%%\setmainfont[Ligatures={TeX,Historic}]{CMU Serif} %% задаёт основной шрифт документа
+%%\setsansfont{CMU Sans Serif}                    %% задаёт шрифт без засечек
+%%\setmonofont{CMU Typewriter Text}               %% задаёт моноширинный шрифт
+\setmainfont{Arno Pro Display}
+\setmonofont[Scale=0.9]{Ubuntu Mono}
+%%\setmainfont{Nimbus Roman No9 L}
+%%\setsansfont{Nimbus Sans L}
+%%\setmonofont{Nimbus Mono L}
+\tolerance=1300
 
 \begin{document}
 \maketitle
-
 \begin{abstract}
 This paper presents general YAML pipeline syntax \ldots
+Мягкие булочки ✂✂✂
 \end{abstract}
-
+\begin{multicols}{2}
 \section{Elements specifications}
 YAML Pipeline is a set of YAML mappings that specify workflow.
 There are following types of \verb|YAML elements|:
@@ -59,7 +75,7 @@ There are following types of \verb|YAML elements|:
 \end{itemize}
 
 \section{General YAML Pipeline info}\label{general_info}
-\paragraph{pipeline variables}Pipeline element manages variables that were setted in steps via \verb|sets: str| key value pair. \verb|str| represented in special varible syntax \verb|{{ varible name }}| strictly matching folowing regexp \verb|(?<={{).*(?=}})|. Pipeline variables may be sent to executing step as a \verb|args| and \verb|kwargs| fields. All variables are have a global pipeline scope. If two steps set same variable name then the last step will override value that was set before.
+\paragraph{pipeline variables}Pipeline element manages variables that were setted in steps via \verb|sets: str| key value pair. \verb|str| represented in special varible syntax \texttt{\{\{ varible name \}\}} strictly matching folowing regexp \verb|(?<={{).*(?=}})|. Pipeline variables may be sent to executing step as a \verb|args| and \verb|kwargs| fields. All variables are have a global pipeline scope. If two steps set same variable name then the last step will override value that was set before.
 
 \paragraph{name}Every \verb|YAML pipeline element| has the optional \verb|name: str| mapping. This field is intednet to be used as an identifier for import or as a description.
 
@@ -123,6 +139,6 @@ We worked hard, and achieved very little.
 
 \bibliographystyle{abbrv}
 \bibliography{main}
-
+\end{multicols}
 \end{document}
 This is never printed

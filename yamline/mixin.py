@@ -1,9 +1,8 @@
 import importlib
 import re
-
 import yaml
 
-import literals
+import yamline.literals as literals
 
 
 def get_pipeline(spec_path, alias_path=None):
@@ -11,8 +10,10 @@ def get_pipeline(spec_path, alias_path=None):
     if alias_path:
         aliases = parse_file(alias_path)
     else:
-        aliases = parse_yaml_string(literals.default)
+        aliases = parse_yaml_string(literals.DEFAULT_MAPPING)
     set_aliases(aliases)
+    borg = VarsBorg()
+    borg.reset()
     return Pipeline(spec)
 
 
@@ -49,6 +50,8 @@ class Step(object):
             self._sets_name = _extract_var_name(self._spec_sets)
         if isinstance(self._spec_sets, list):
             self._sets_name = _extract_vars_from_list(self._spec_sets)
+
+        self._result = None
 
     def execute(self):
         if self._callable_instance:
@@ -178,7 +181,7 @@ class VarsBorg(object):
 
 
 def evaluate_when(spec_when):
-    if isinstance(spec_when, str) and re.search(var_regexp, spec_when):
+    if isinstance(spec_when, str) and re.search(VAR_REGEXP, spec_when):
         shared_vars = VarsBorg()
         var_name = _extract_var_name(spec_when)
         var_placeholder = _extract_var_placeholder(spec_when)
@@ -195,7 +198,7 @@ def parse_args(spec_args):
     args = []
     shared_vars = VarsBorg()
     for item in spec_args:
-        if isinstance(item, str) and re.search(var_regexp, item):
+        if isinstance(item, str) and re.search(VAR_REGEXP, item):
             var_name = _extract_var_name(item)
             args.append(getattr(shared_vars, var_name))
         else:
@@ -207,7 +210,7 @@ def _parse_kwargs(spec_kwargs):
     kwargs = {}
     shared_vars = VarsBorg()
     for key, value in spec_kwargs.items():
-        if isinstance(value, str) and re.search(var_regexp, value):
+        if isinstance(value, str) and re.search(VAR_REGEXP, value):
             var_name = _extract_var_name(value)
             kwargs[key] = getattr(shared_vars, var_name)
         else:
@@ -260,8 +263,8 @@ def _get_element(authority):
 
 
 def _extract_var_name(str_to_parse):
-    if str_to_parse and re.search(var_regexp, str_to_parse):
-        var_name = re.search(var_regexp, str_to_parse).group().strip()
+    if str_to_parse and re.search(VAR_REGEXP, str_to_parse):
+        var_name = re.search(VAR_REGEXP, str_to_parse).group().strip()
         return var_name
 
 
@@ -270,8 +273,8 @@ def _extract_vars_from_list(vars_list):
 
 
 def _extract_var_placeholder(str_to_parse):
-    if str_to_parse and re.search(var_regexp, str_to_parse):
-        var_placeholder_str = re.search(var_placeholder_regexp,
+    if str_to_parse and re.search(VAR_REGEXP, str_to_parse):
+        var_placeholder_str = re.search(VAR_PLACEHOLDER_REGEXP,
                                         str_to_parse).group().strip()
         return var_placeholder_str
 
@@ -298,8 +301,8 @@ def _parse_uri(uri):
         return _get_element(authority)
 
 
-var_regexp = '(?<={{).*(?=}})'
-var_placeholder_regexp = '{{.*}}'
+VAR_REGEXP = '(?<={{).*(?=}})'
+VAR_PLACEHOLDER_REGEXP = '{{.*}}'
 
 
 def parse_yaml_string(spec_str):
@@ -307,9 +310,9 @@ def parse_yaml_string(spec_str):
 
 
 def validate_aliases():
-    for required_literal in literals.required:
+    for required_literal in literals.REQUIRED_KEYS:
         if required_literal not in literals.__dict__:
-            defaults = parse_yaml_string(literals.default)
+            defaults = parse_yaml_string(literals.DEFAULT_MAPPING)
             setattr(literals, required_literal, defaults[required_literal])
             raise RuntimeError(
                 "Parsing error! No alias for '{}'".format(required_literal))
@@ -322,8 +325,15 @@ def set_aliases(aliases):
 
 
 def parse_file(path):
-    with open(path) as f:
-        spec_str = f.read()
+    if isinstance(path, file):
+        spec_str = path.read()
+        try:
+            return parse_yaml_string(spec_str)
+        except:
+            raise
+
+    with open(path) as yaml_file:
+        spec_str = yaml_file.read()
         try:
             return parse_yaml_string(spec_str)
         except:

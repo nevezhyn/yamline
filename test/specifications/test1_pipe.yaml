@@ -30,29 +30,12 @@ stage:
   - stage description: Test values setup
     stage:
     - description: Print all values in std out
-      import: import://specifications/basic.yaml/echo
-
-    - import: import://specifications/basic_file.yaml
-    - description: Print all values
-      strategy: module://strategies/basic/echo
-      sets: "{{ global_vars }}"
+      strategy: module://strategies/basic/print_params
       args:
-      - "{{ mapping_value }}"
-      - "{{ sequence }}"
+        - Hallo1
+        - Hallo2
       kwargs:
-        mapping_value: "{{ mapping_value }}"
-
-    - stage description: Raises ZeroDevision exception
-      strategy: module://strategies/basic/zero
-
-    - description: Print all values
-      strategy: module://strategies/basic/echo
-      sets: "{{ global_vars }}"
-      args:
-      - "{{ mapping_value }}"
-      - "{{ sequence }}"
-      kwargs:
-        mapping_value: "{{ mapping_value }}"
+        Hallo3: Hallo3
 
     error:
     - stage description: In Exception

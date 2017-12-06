@@ -1,8 +1,10 @@
 from distutils.core import setup
 
+from yamline import __version__
+
 setup(
     name='yamline',
-    version='0.0.2',
+    version=__version__,
     packages=['yamline'],
     url='https://github.com/nevezhyn/yamline',
     license='',
