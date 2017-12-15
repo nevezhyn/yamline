@@ -95,8 +95,8 @@ def parse_arguments():
     parser.add_argument('-p', '--parallel',
                         action='store_true',
                         default=False,
-                        help='If present then run yamlines in as '
-                             'parallel processes')
+                        help='[NOT SUPPORTED JET] If present then run yamlines'
+                             ' in as parallel processes')
 
     parser.add_argument('yamlines', type=argparse.FileType('r'), nargs='+')
     return parser.parse_args()

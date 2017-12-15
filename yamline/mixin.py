@@ -135,7 +135,7 @@ class Stage(object):
 
 
 class Pipeline(object):
-    def __init__(self, pipeline_spec):
+    def __init__(self, pipeline_spec, name=''):
         self._spec_aliases = pipeline_spec.get(literals.PIPELINE_ALIASES, '')
         self._spec_import = pipeline_spec.get(literals.PIPELINE_IMPORT, [])
         self._spec_metadata = pipeline_spec.get(literals.PIPELINE_METADATA, {})
