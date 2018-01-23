@@ -1,4 +1,5 @@
 from yamline import get_pipeline
 
-pipeline = get_pipeline('specifications/test1.yaml')
-pipeline.execute()
+if __name__ == '__main__':
+    pipeline = get_pipeline('specifications/test1.yaml')
+    pipeline.execute()
